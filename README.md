@@ -30,7 +30,7 @@ cp .env.example .env
 #   $env:DTM_API_KEY = "your_key"
 ```
 
-**Security:** If you received credentials in a prior workspace export, **rotate your IOM DTM API keys** in the Developer Portal before use. Never commit `.env` or key files.
+**Security:** Never commit `.env` or key files. For local development you may keep `iom_key.txt` in your working copy (it is listed in `.gitignore`); use only the `primary_key` value as `DTM_API_KEY`, not the whole file. If keys were ever logged or shared, rotate them in the IOM Developer Portal.
 
 ## Boundary setup (before GDACS R pipeline)
 
