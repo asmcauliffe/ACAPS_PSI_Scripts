@@ -1,0 +1,38 @@
+# Secrets
+.env
+iom_key.txt
+*.key
+
+# Python / R local
+__pycache__/
+*.pyc
+.Rhistory
+.Rproj.user
+
+# Generated outputs (client re-runs pipelines)
+*_results/
+gdelt_results/
+gdacs_results/
+wfp_food_prices_results/
+meta_mobility_results/
+wikipedia_results/
+dtm_results/
+
+# GDELT bulk cache (multi-GB)
+**/_gkg_cache/
+**/_gkg_bulk_state.pkl
+**/_gkg_bulk_state*.pkl
+**/_raw_cache/
+
+# Large merged boundary (rebuilt locally)
+country_adm2_shapefiles/countries_of_interest.geojson
+
+# IDE / OS
+.claude/
+.DS_Store
+Thumbs.db
+*.docx
+
+# Logs
+**/run_log.txt
+**/*_log.txt
