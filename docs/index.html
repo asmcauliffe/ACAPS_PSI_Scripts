@@ -33,11 +33,11 @@
     </div>
     <p class="status" data-status>Loading the nine country-months…</p>
     <div class="controls">
-      <label>Country
-        <select data-country aria-label="Country"></select>
+      <label for="country">Country
+        <select id="country" name="country" data-country></select>
       </label>
-      <label>Month
-        <select data-period aria-label="Month"></select>
+      <label for="period">Month
+        <select id="period" name="period" data-period></select>
       </label>
     </div>
     <p class="muted" data-meta></p>
@@ -62,10 +62,10 @@
     <section class="panel">
       <h2>Districts</h2>
       <div class="toolbar">
-        <label class="grow">Search admin name or GAUL code
-          <input type="search" data-search placeholder="Kabul, Bagrami, 103069">
+        <label class="grow" for="district-search">Search admin name or GAUL code
+          <input id="district-search" name="q" type="search" data-search placeholder="Kabul, Bagrami, 103069">
         </label>
-        <label class="check"><input type="checkbox" data-source> Show source columns</label>
+        <label class="check" for="show-source"><input id="show-source" name="source" type="checkbox" data-source> Show source columns</label>
       </div>
       <div data-table></div>
       <div class="pager" data-pager>
