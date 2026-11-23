@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proxy Severity Index — method</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to the method</a>
+  <header class="site-header">
+    <a class="mark" href="index.html">
+      <strong>Proxy Severity Index</strong>
+      <span>ACAPS · INFORM novel data</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Explorer</a>
+      <a href="answers.html">Answers</a>
+      <a href="method.html" aria-current="page">Method</a>
+      <a href="data.html">Data</a>
+    </nav>
+  </header>
+  <main id="content" class="prose">
+    <p class="kicker">How the scores are built</p>
+    <h1>One formula, two places it gets applied twice</h1>
+    <p>National PSI = 0.6 × the highest driver + 0.4 × the population-weighted mean of the drivers. Population is the district total in the extract (<code>tltpop</code>). Wikipedia is blended into conflict at 20 percent after that mean. GDELT / Goldstein is blended into political violence at 25 percent. Those national blends are one number per country-month, not a district series.</p>
+
+    <h2>Driver weights</h2>
+    <p>The default driver weights sum to 1. They are the simulator’s starting point.</p>
+    <dl class="weights">
+      <dt>Conflict</dt><dd>0.20</dd>
+      <dt>Displacement</dt><dd>0.20</dd>
+      <dt>Political</dt><dd>0.15</dd>
+      <dt>Drought</dt><dd>0.15</dd>
+      <dt>Flood</dt><dd>0.10</dd>
+      <dt>Earthquake</dt><dd>0.10</dd>
+      <dt>Cyclone</dt><dd>0.10</dd>
+    </dl>
+    <p>Inside a driver, the shares are renormalised so the pieces that are present sum to 1. Conflict is ACLED 0.45 and UCDP 0.35, which becomes 0.5625 / 0.4375. Protests 0.25 and night lights 0.50 become 1/3 and 2/3. Flood is rainfall 0.45 and GDACS 0.55. Drought is SPEI 0.50, NDVI cropland 0.30, NDVI grassland 0.20. Displacement is IOM 0.60 and Facebook 0.40.</p>
+
+    <h2>Severity and the PiN gate</h2>
+    <p>A z-score is cut at 1.28, 1.64, 2.05, and 2.58 and mapped to 3.3, 5.0, 6.7, and 10. Anything lower is 0. The PiN gates 0, 0.33, 0.50, and 1 are population fractions for the tiers 0, 3.3, 5, and 6.7-or-10. They are not severity scores. Earthquake severity correctly uses the GDACS severity column. The gate is only for people in need.</p>
+    <p>The dashboard folds the night-light gate and the NDVI gates into the 0–10 blend. The reconstruction uses the severity columns. One source error is left as stored: Ethiopia, March 2022, Majang in Gambela, GAUL 103069, protest severity −0.66. The reconstructed political score clamps that cell to 0.</p>
+
+    <h2>Where the columns are already a weighted score</h2>
+    <p>Three storage patterns show up in the extract. The script labels each district.</p>
+    <ul>
+      <li><strong>Independent.</strong> Ethiopia. ACLED and UCDP are weighted once.</li>
+      <li><strong>Pre-split.</strong> Afghanistan, and Iran in January and February 2026. The columns sum to the combined score. Adding the weights again double-counts them. The reconstruction sums the columns.</li>
+      <li><strong>ACLED holds the full score.</strong> Iran, March 2026. UCDP is 0 everywhere and ACLED can exceed 5.625. The reconstruction uses ACLED as the conflict score.</li>
+    </ul>
+
+    <h2>What the reconstruction changes</h2>
+    <ul>
+      <li>Conflict is counted once, using the storage rule above.</li>
+      <li>Political violence and drought use severity columns, not PiN gates.</li>
+      <li>Displacement severity is IOM alone, because Facebook is an explicit zero. The IDP count is unchanged.</li>
+      <li>A driver that is missing in every district is dropped and the other weights are renormalised. Iran’s displacement is that case. The dashboard’s mean turns an all-missing driver into 0, so the PSI stays numeric.</li>
+      <li>The “without cyclone” column also drops cyclone. Cyclone severity is 0 in every shipped month, so keeping it is a real zero in the mean, not a missing series. That column is the one that sits next to Iran’s Airtable totals.</li>
+    </ul>
+
+    <h2>Worked rows</h2>
+    <div data-examples><p class="status">Loading the worked rows…</p></div>
+
+    <h2>What this script is not</h2>
+    <p><code>scripts/build_psi_tables.py</code> reads the admin-2 extract and writes the national table, the district table, and the files this site loads. It checks Iran’s without-cyclone scores (3.475, 3.416, 2.922), Afghanistan’s July dashboard score (1.953), a July conflict PiN of 0, and the Dand Wa Patan double-count (10 combined, about 5.078 on the dashboard).</p>
+    <p>It does not rebuild pixel rasters, the tier CSVs, or a country-specific <code>calculation_agg.R</code>. Those were not in the repository. The collection scripts at the root of this repo still run in the order in the README, and their outputs stay out of git.</p>
+  </main>
+  <footer class="site-footer">
+    <p>Run the check from the repository root: <code>python scripts/build_psi_tables.py</code>.</p>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

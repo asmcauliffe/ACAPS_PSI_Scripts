@@ -1,0 +1,33 @@
+column,meaning
+country,Country name. Filled on every row.
+period,"Month label, for example March 2026. Filled on every row."
+period_start,"First day of that month, for sorting."
+admin1_name,GAUL admin-1 name from the dashboard file.
+admin2_name,GAUL admin-2 name from the dashboard file.
+adm2_id,GAUL admin-2 code. Use this as the stable key.
+population,District population (tltpop) used as the national weight.
+acled_conflict_adm2_sev,Stored ACLED conflict column. In Afghanistan and Iran Jan/Feb this is 56.25% of a combined score.
+ucdp_conflict_adm2_sev,Stored UCDP conflict column. The paired 43.75% share when the columns are pre-split.
+conflict_column_rule,"pre_split_sum, acled_holds_full_score, or weighted_once."
+conflict_dashboard,0.5625*ACLED + 0.4375*UCDP. This is what the Shiny app maps.
+conflict_reconstructed,"Combined score when the columns were pre-split; otherwise the weighted score, applied once."
+iom_severity,"IOM displacement tier on the 0, 3.3, 5, 6.7, 10 scale. Blank for Iran."
+iom_status,present or missing. Missing is not the same as zero.
+fbook_severity,Facebook mobility severity. Explicit 0 on every row in this delivery.
+facebook_status,"explicit_zero marks a filled zero, not a measurement that happened to be zero in one district."
+displacement_dashboard,0.6*IOM + 0.4*Facebook. Equals 0.6*IOM while Facebook is 0.
+displacement_reconstructed,IOM severity alone. Blank where IOM is missing.
+nlr_severity,Night-light / political severity on the 0–10 tier scale.
+nlr_gate,"PiN fraction for NLR: 0, 0.33, 0.50 or 1. The dashboard uses this inside the severity blend."
+political_dashboard,"Protest share times protest severity, plus NLR share times nlr_gate."
+political_reconstructed,"Same shares, using nlr_severity. A negative protest value is treated as 0."
+drought_dashboard,SPEI severity blended with NDVI gates (0–1).
+drought_reconstructed,"SPEI, NDVI cropland and NDVI grassland severities, all on the 0–10 scale."
+pin_conflict_dashboard,"Whole district population if either stored conflict column is at least 3.3, else 0."
+pin_conflict_district_reconstructed,"Whole district population if the reconstructed conflict score is at least 3.3. This is still a district rule, not the pixel PiN."
+pin_displacement,Raw IOM IDP count. This is the displacement PiN in both readings.
+psi_dashboard,National PSI the Shiny app shows at default weights.
+psi_reconstructed,"National PSI with conflict counted once, severity scales, IOM alone, and missing drivers dropped. Cyclone stays in as 0."
+psi_without_cyclone,psi_reconstructed with cyclone also dropped. This is the Iran reading closest to the Airtable totals.
+wikipedia_severity,"One national Wikipedia severity, blended into conflict at 20% after the population-weighted mean."
+gdelt_severity,"One national GDELT / Goldstein severity, blended into political at 25%."

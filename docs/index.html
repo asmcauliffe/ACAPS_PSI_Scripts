@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proxy Severity Index — explorer</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip" href="#explorer">Skip to the explorer</a>
+  <header class="site-header">
+    <a class="mark" href="index.html">
+      <strong>Proxy Severity Index</strong>
+      <span>ACAPS · INFORM novel data</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Explorer</a>
+      <a href="answers.html">Answers</a>
+      <a href="method.html">Method</a>
+      <a href="data.html">Data</a>
+    </nav>
+  </header>
+  <main id="explorer" data-explorer>
+    <p class="kicker">Nine country-months in the dashboard file</p>
+    <h1>Three readings of the same districts</h1>
+    <div class="lede">
+      <p>The methodology document is the published result. The Shiny dashboard is a weight simulator: it starts from defaults so someone can try other weights. Airtable was loaded from the published work, then lost country, admin name, and period on most Iran and Ethiopia rows.</p>
+      <p>Pick a country and a month. The first number is the dashboard at its default weights. The second counts conflict once and uses severity scales. The third also drops cyclone, which is a structural zero in every shipped month and is how Iran’s Airtable totals were reached.</p>
+    </div>
+    <p class="status" data-status>Loading the nine country-months…</p>
+    <div class="controls">
+      <label>Country
+        <select data-country aria-label="Country"></select>
+      </label>
+      <label>Month
+        <select data-period aria-label="Month"></select>
+      </label>
+    </div>
+    <p class="muted" data-meta></p>
+    <div class="scores" data-scores></div>
+    <section class="panel">
+      <h2>Drivers</h2>
+      <div class="legend">
+        <span><i class="swatch dash"></i>Dashboard</span>
+        <span><i class="swatch ink"></i>Reconstructed</span>
+      </div>
+      <div data-drivers></div>
+    </section>
+    <section class="panel">
+      <h2>People in need</h2>
+      <p class="muted">Pixel PiN — the union of affected pixels, with a Tier-2 gate, then the larger of that and the admin-2 figure — is the intended definition. Those rasters were not in the delivery, so they are not recomputed here. These two conflict figures are district rules applied to the same file.</p>
+      <div class="pins" data-pins></div>
+    </section>
+    <section class="panel">
+      <h2>What is different in this month</h2>
+      <ul class="notes" data-notes></ul>
+    </section>
+    <section class="panel">
+      <h2>Districts</h2>
+      <div class="toolbar">
+        <label class="grow">Search admin name or GAUL code
+          <input type="search" data-search placeholder="Kabul, Bagrami, 103069">
+        </label>
+        <label class="check"><input type="checkbox" data-source> Show source columns</label>
+      </div>
+      <div data-table></div>
+      <div class="pager" data-pager>
+        <button type="button" data-prev>Previous</button>
+        <span data-range></span>
+        <button type="button" data-next>Next</button>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Source file: <code>data/psi/indicator_components.csv</code>, exported from the dashboard repository. Rebuild with <code>python scripts/build_psi_tables.py</code>.</p>
+    <p>The written answers to the client questions are on the <a href="answers.html">Answers</a> page.</p>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

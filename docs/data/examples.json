@@ -1,0 +1,55 @@
+{
+  "dand_wa_patan": {
+    "country": "Afghanistan",
+    "period": "March 2026",
+    "admin1": "Paktya",
+    "admin2": "Dand Wa Patan",
+    "population": 12818.033,
+    "acled": 5.625,
+    "ucdp": 4.375,
+    "combined": 10.0,
+    "dashboard": 5.078
+  },
+  "kabul_july": {
+    "kabul_acled": 2.879,
+    "kabul_ucdp": 2.239,
+    "kabul_combined": 5.119,
+    "kabul_population": 3919162.125,
+    "bagrami_combined": 3.719,
+    "bagrami_population": 497462.762,
+    "pin_dashboard": 0,
+    "pin_district": 4416625,
+    "districts": 2
+  },
+  "kabul_august": {
+    "kabul_acled": 3.059,
+    "kabul_ucdp": 2.379,
+    "kabul_combined": 5.438,
+    "bagrami_combined": 3.446,
+    "pin_dashboard": 0,
+    "pin_district": 4416625
+  },
+  "majang": {
+    "admin1": "Gambela",
+    "admin2": "Majang",
+    "period": "March 2022",
+    "protests": -0.66
+  },
+  "iran": {
+    "January 2026": {
+      "dashboard": 3.102,
+      "reconstructed": 3.345,
+      "without_cyclone": 3.475
+    },
+    "February 2026": {
+      "dashboard": 3.121,
+      "reconstructed": 3.328,
+      "without_cyclone": 3.416
+    },
+    "March 2026": {
+      "dashboard": 2.27,
+      "reconstructed": 2.824,
+      "without_cyclone": 2.922
+    }
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proxy Severity Index — answers</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to the answers</a>
+  <header class="site-header">
+    <a class="mark" href="index.html">
+      <strong>Proxy Severity Index</strong>
+      <span>ACAPS · INFORM novel data</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Explorer</a>
+      <a href="answers.html" aria-current="page">Answers</a>
+      <a href="method.html">Method</a>
+      <a href="data.html">Data</a>
+    </nav>
+  </header>
+  <main id="content" class="prose">
+    <p class="kicker">Client questions</p>
+    <h1>Which number is the result</h1>
+    <div class="callout">
+      <p>The methodology document is the published result. Airtable was loaded from that work, and its geography keys are broken. The dashboard is a simulation tool. It is not a second official estimate.</p>
+      <p>Where the document, the base, and the app disagree, the document wins. The reconstruction on this site shows how the Iran totals in Airtable were produced from the dashboard extract, and where the app’s default path diverges from that.</p>
+    </div>
+
+    <section class="answer" id="q1">
+      <h2>1. The middle of the pipeline was never pushed</h2>
+      <p>The collection scripts in this repository are the front of the pipeline: GDELT, GDACS, IOM DTM, Meta movement, WFP prices, and Wikipedia, for 13 countries from 2018. The dashboard README points at <code>pin_proxy_update.R</code> in a parent ACAPS workspace. That workspace is not in either public repository. There is no <code>calculation_agg.R</code>, no country-specific Afghanistan or Iran copy, and no <code>t1_go4.csv</code>, <code>t2_go4.csv</code>, or <code>t3_go1.csv</code>.</p>
+      <p>What did ship is the admin-2 extract the app reads: <code>indicator_components.rds</code> in the dashboard repository, exported here as <a href="data/indicator_components.csv"><code>indicator_components.csv</code></a>. It covers Ethiopia (March–May 2022), Afghanistan (July 2025, August 2025, March 2026), and Iran (January–March 2026). The other ten collection countries are not in that file.</p>
+      <p><code>scripts/build_psi_tables.py</code> is a reconstruction of the aggregation from that extract. It is not a recovery of the pixel rasters, and it does not pretend to be the missing R scripts. Admin-2 boundaries for the 13 countries are already in <code>country_adm2_shapefiles/</code>.</p>
+    </section>
+
+    <section class="answer" id="q2">
+      <h2>2. Airtable dropped the geography, the file did not</h2>
+      <p>Every one of the 2,730 rows in the dashboard extract has a country, an admin-1 name, an admin-2 name, a GAUL code, and a period. Identity fields are complete. Iran’s IOM severity is missing on all 1,281 Iran rows, which is a real gap, not a blank label. Facebook severity is an explicit zero on every row.</p>
+      <p>The empty country, admin name, and period cells in the Iran and Ethiopia Airtable views, and the missing period on Afghanistan March 2026, are an export problem. They are not how the source file is stored. <a href="data/psi_adm2_for_airtable.csv"><code>psi_adm2_for_airtable.csv</code></a> is the same geography with those fields filled, plus the two readings of each score. Country, period, admin-1, and admin-2 together are unique. Admin-2 names can repeat across admin-1, so the GAUL code is the stable key.</p>
+    </section>
+
+    <section class="answer" id="q3">
+      <h2>3. Pixel PiN is the intended conflict figure</h2>
+      <p>Yes. The method defines people in need from the pixel union for conflict, political violence, SPEI, and rainfall, plus a Tier-2 gate, and then takes the larger of that and the admin-2 figure. Conflict is pixel-only, so a district average of the severity dilutes it toward zero.</p>
+      <p>The dashboard does not do that. It flags a whole district when the larger of the stored ACLED and UCDP columns is at least 3.3. In Afghanistan in July and August 2025 those stored pieces each stay under 3.3, so conflict PiN is 0. Kabul and Bagrami are over 3.3 once the pieces are added back together (5.12 and 3.72 in July; 5.44 and 3.45 in August). The district reconstruction counts those two districts, 4,416,625 people, in both months.</p>
+      <p>That district figure is still not the pixel PiN. The rasters were not shared, so the pixel number cannot be recomputed from this repository. Open <a href="index.html?country=Afghanistan&amp;period=July%202025">Afghanistan, July 2025</a> to see both district rules side by side.</p>
+    </section>
+
+    <section class="answer" id="q4">
+      <h2>4. Why the national scores sit below the document</h2>
+      <p>The national formula is 0.6 times the highest driver plus 0.4 times the population-weighted mean of the drivers. In the R helper the 0.6 weight is misnamed and the 0.4 weight is misnamed the other way. The arithmetic is still 0.6 × max + 0.4 × weighted mean. Those two weights are not sliders.</p>
+      <h3>4a. Conflict is stored already split, then weighted again</h3>
+      <p>In Afghanistan, all three months, and in Iran in January and February 2026, the ACLED and UCDP columns are one combined score divided 0.45 / 0.35. Where both are positive the ratio is 1.2857 and the columns sum to a single 0–10 score. The within-driver weights renormalise to 0.5625 and 0.4375. The dashboard multiplies by those weights again, which keeps about half of the combined score (0.51). Ethiopia is different: ACLED and UCDP move separately (correlation about 0.24) and should be weighted once.</p>
+      <p>Iran in March 2026 is a third pattern. UCDP is 0 on all 427 counties and ACLED reaches 8.87, above the 5.625 cap of a pre-split piece, so ACLED is holding the full score. The dashboard still multiplies it by 0.5625.</p>
+      <h3>4b. Displacement severity is IOM. The dashboard keeps 60 percent of it</h3>
+      <p>The severity blend is 60 percent IOM and 40 percent Facebook. Facebook is an explicit 0 on every shipped row, so the dashboard displacement score is 0.6 × IOM. The published severity is IOM alone: with Facebook contributing nothing, the 60/40 pair renormalises onto IOM. People in need for displacement is the raw IOM count either way, not the severity score.</p>
+      <p>Afghanistan’s IOM severity and IDP count are the same file copied across July 2025, August 2025, and March 2026. The population-weighted IOM severity is 3.828, and the dashboard shows 2.297, which is 0.6 × 3.828. Ethiopia’s displacement does change between March and April 2022. April and May 2022 share the same IDP counts.</p>
+      <h3>4c. Iran has no IOM, and cyclone is a structural zero</h3>
+      <p>IOM severity is missing for every Iran district, not zero. A population-weighted mean that treats missing as zero, which is what the dashboard does, keeps displacement in the formula as 0 and the national PSI does not go blank. The reconstruction drops a driver when every district is missing, and renormalises the remaining weights.</p>
+      <p>Cyclone severity is 0 in every shipped month. Leaving that structural zero in the mean pulls the score down. Dropping it, and dropping the missing displacement driver, produces 3.475, 3.416, and 2.922. Airtable has 3.50, 3.41, and 2.93. The residual is under three hundredths and is consistent with workbook rounding or a slightly different population grid. Those Airtable hundredths remain the published Iran totals. Using the PiN gates inside the severity blend, which the dashboard does for night lights and NDVI, moves the match slightly further away.</p>
+    </section>
+
+    <section class="answer" id="q5">
+      <h2>5. The document is the final version</h2>
+      <p>Use the methodology document when a figure is quoted as the result. Use Airtable as the place those results were loaded, after the geography columns are repaired from <a href="data/psi_adm2_for_airtable.csv">the cleaned extract</a>. Use the dashboard when the question is “what happens if the weights change,” and read its default national number as the simulator’s starting point.</p>
+      <p>The gap that cannot be closed from the files on hand is the pixel PiN. Everything else the client asked about — the missing middle, the blank Airtable keys, the double-counted conflict weights, the Facebook zero, and the Iran total — is visible in the extract and in the table below.</p>
+    </section>
+
+    <h2>All nine months</h2>
+    <div data-national><p class="status">Loading the national table…</p></div>
+  </main>
+  <footer class="site-footer">
+    <p>Weights, the worked districts, and the formula are on the <a href="method.html">Method</a> page. The files are on <a href="data.html">Data</a>.</p>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

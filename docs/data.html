@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proxy Severity Index — data</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to the data</a>
+  <header class="site-header">
+    <a class="mark" href="index.html">
+      <strong>Proxy Severity Index</strong>
+      <span>ACAPS · INFORM novel data</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Explorer</a>
+      <a href="answers.html">Answers</a>
+      <a href="method.html">Method</a>
+      <a href="data.html" aria-current="page">Data</a>
+    </nav>
+  </header>
+  <main id="content">
+    <p class="kicker">Files in this repository</p>
+    <h1>Cleaned tables, ready to reload</h1>
+    <div class="prose">
+      <p>The canonical copies live in <code>data/psi/</code>. The same bytes are under <code>docs/data/</code> so GitHub Pages can serve them. Reload Airtable from the admin-2 CSV. Country, period, admin-1, and admin-2 are filled on every row.</p>
+    </div>
+    <ul class="files">
+      <li>
+        <strong><a href="data/psi_adm2_for_airtable.csv">psi_adm2_for_airtable.csv</a></strong>
+        <p class="muted">2,730 districts. Geography, both readings of each driver, and both district PiN rules.</p>
+      </li>
+      <li>
+        <strong><a href="data/psi_national_for_airtable.csv">psi_national_for_airtable.csv</a></strong>
+        <p class="muted">Nine country-months. Dashboard PSI, reconstructed PSI, PSI without cyclone, and the driver scores behind them.</p>
+      </li>
+      <li>
+        <strong><a href="data/indicator_components.csv">indicator_components.csv</a></strong>
+        <p class="muted">The dashboard extract, unchanged apart from the CSV export. This is the input <code>build_psi_tables.py</code> reads.</p>
+      </li>
+      <li>
+        <strong><a href="data/psi_data_dictionary.csv">psi_data_dictionary.csv</a></strong>
+        <p class="muted">What each published column means, including the difference between a missing IOM value and an explicit Facebook zero.</p>
+      </li>
+    </ul>
+    <h2>National scores</h2>
+    <div data-national><p class="status">Loading the national table…</p></div>
+    <h2>Column dictionary</h2>
+    <div data-dictionary><p class="status">Loading the dictionary…</p></div>
+  </main>
+  <footer class="site-footer">
+    <p>Regenerate from the repository root with <code>python scripts/build_psi_tables.py</code>. The script refuses to finish if the checked national figures move.</p>
+  </footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

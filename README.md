@@ -2,7 +2,26 @@
 
 Python and R scripts used to collect and process humanitarian and media indicators for **13 countries of interest** (2018–present), supporting the INFORM Novel Data consultancy.
 
-The PSI Shiny dashboard lives in a **separate repository**; this repo contains only data-collection and processing pipelines.
+The PSI Shiny dashboard lives in a **separate repository**. This repo contains the collection pipelines, the cleaned admin-2 and national tables for the three countries in the dashboard extract, and a static site that answers the client questions about that delivery.
+
+## Guide, cleaned results, and the aggregation
+
+The parent ACAPS workspace named in the dashboard README was never pushed. There is no `calculation_agg.R`, no `pin_proxy_update.R`, and no pixel rasters in this repository. What shipped as an input is the admin-2 extract, exported here as [`data/psi/indicator_components.csv`](data/psi/indicator_components.csv).
+
+| Piece | Where |
+| --- | --- |
+| Interactive site (GitHub Pages from `/docs`) | [`docs/`](docs/) |
+| Cleaned tables, with country, period, and admin names filled | [`data/psi/`](data/psi/) |
+| Aggregation reconstructed from that extract | [`scripts/build_psi_tables.py`](scripts/build_psi_tables.py) |
+
+The methodology document is the published result. The dashboard is a weight simulator, not a second official estimate. `build_psi_tables.py` rebuilds the national scores two ways (the dashboard defaults, and a reconstruction that counts conflict once) and a third column that also drops cyclone. That third column is the one within 0.03 of the Iran Airtable totals. It does not invent the pixel people-in-need figure.
+
+```bash
+python scripts/build_psi_tables.py
+python3 -m http.server 4721 --bind 127.0.0.1 --directory docs
+```
+
+GitHub Pages: Settings → Pages → Deploy from a branch → `main` → `/docs`. The site is then [https://asmcauliffe.github.io/ACAPS_PSI_Scripts/](https://asmcauliffe.github.io/ACAPS_PSI_Scripts/). `docs/.nojekyll` is included so every file in that folder is served.
 
 ## Countries of interest
 
@@ -89,6 +108,7 @@ python wikipedia_edit_frequency.py
 
 | Script | Output directory | Main outputs |
 |--------|------------------|--------------|
+| `scripts/build_psi_tables.py` | `data/psi/` and `docs/data/` | National and admin-2 PSI tables from `indicator_components.csv` |
 | `gdelt_fetch.py` | `./gdelt_results/` | `events_monthly.csv`, optional `themes_monthly.csv` |
 | `gkg_bulk_themes.py` | `./gdelt_results/` | `themes_monthly_gkg.csv` |
 | `postprocess_gkg_themes.py` | `./gdelt_results/` | `combined_monthly_gkg_all_countries.csv` |
@@ -121,6 +141,7 @@ The [`examples/`](examples/) folder contains snapshot CSVs from the May 2026 run
 - **GKG midnight UTC slices** sometimes return HTTP 404; skipped days are not marked done — re-run with `--resume`.
 - **GKG bulk cache** (`gdelt_results/_gkg_cache/`) can exceed 15 GB; it is gitignored. Delete to reclaim disk space after a successful run.
 - **IOM DTM** requires a valid `DTM_API_KEY`; use the raw key string, not the multi-line portal export file.
+- **Pixel people in need, the tier CSVs, and `calculation_agg.R`** were not in the parent workspace that reached this repo. `build_psi_tables.py` aggregates the dashboard extract only. Do not treat its district conflict PiN as the pixel figure in the methodology document.
 
 ## License
 
